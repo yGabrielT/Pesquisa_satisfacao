@@ -1,0 +1,110 @@
+@font-face {
+  font-family: HomeVideo; /* set name */
+  src: url(/img/home-video-font/HomeVideo-BLG6G.ttf); /* url of the font */
+}
+
+
+
+body{
+    background-image: url(/img/background_1.png);
+    background-clip: padding-box;
+
+}
+
+.attack-menu {
+  display: flex;
+  flex-direction: column;
+  row-gap: 1vh;
+  position: fixed;
+  left:0;
+  bottom: 0;
+  width: 40%;
+  margin: 10px;
+  background-clip: padding-box;
+  background-image: url(/img/borders/backgroundorange.png);
+  padding: 40px;
+  border-image-slice: 7 7 7 7;
+  border-image-outset:6px; 
+  border-image-width: 13px; 
+  border-image-source: url(/img/borders/border_orange2.png);
+  border-image-repeat: round;
+}
+.enemy-menu {
+  display: flex;
+  flex-direction: column;
+  row-gap: 1vh;
+  position: fixed;
+  opacity: .5;
+  right:0;
+  top: 0;
+  width: 40%;
+  margin: 10px;
+  background-clip: padding-box;
+  background-image: url(/img/borders/backgroundorange.png);
+  padding: 40px;
+  border-image-slice: 7 7 7 7;
+  border-image-outset:6px; 
+  border-image-width: 13px; 
+  border-image-source: url(/img/borders/border_orange2.png);
+  border-image-repeat: repeat;
+}
+.enemy-menu:hover {
+    opacity: 1;
+}
+
+.enemy-position{
+
+    right: 15%;
+    display: flex;
+    position: absolute;
+    top: 40%;
+    
+}
+
+.enemy{
+
+    right: 15%;
+    height: 40vh;
+    display: flex;
+    position: absolute;
+    top: 40%;
+    
+}
+
+.shadow{
+    right: 15%;
+    height: 40vh;
+    display: flex;
+    position: absolute;
+    margin-top: 4vh;
+    z-index: -1;
+}
+
+.attack-btn{
+    padding: 25px;
+    background: none;
+    text-align: center;
+    
+    font-size: 15px;
+    font-family: HomeVideo;
+    display: inline-block;
+    border: 20px;
+    word-wrap: break-word;
+      border-image-slice: 10;
+    border-image-width: 20px 20px 20px 20px;
+    border-image-outset:2px; 
+    border-image-source: url(/img/borders/border_orange5.png);
+    border-image-repeat: repeat;
+    
+}
+
+
+.point-filter{
+    image-rendering: optimizeSpeed;             /* STOP SMOOTHING, GIVE ME SPEED  */
+    image-rendering: -moz-crisp-edges;          /* Firefox                        */
+    image-rendering: -o-crisp-edges;            /* Opera                          */
+    image-rendering: -webkit-optimize-contrast; /* Chrome (and eventually Safari) */
+    image-rendering: pixelated;                 /* Universal support since 2021   */
+    image-rendering: optimize-contrast;         /* CSS3 Proposed                  */
+    -ms-interpolation-mode: nearest-neighbor;   /* IE8+                           */
+}
