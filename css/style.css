@@ -8,6 +8,7 @@
 body{
     background-image: url(/img/background_1.png);
     background-clip: padding-box;
+    background-size: cover;
 
 }
 
@@ -18,38 +19,97 @@ body{
   position: fixed;
   left:0;
   bottom: 0;
-  width: 40%;
-  margin: 10px;
-  background-clip: padding-box;
-  background-image: url(/img/borders/backgroundorange.png);
+  width: 30%;
+  margin: 50px;
   padding: 40px;
-  border-image-slice: 7 7 7 7;
-  border-image-outset:6px; 
-  border-image-width: 13px; 
-  border-image-source: url(/img/borders/border_orange2.png);
-  border-image-repeat: round;
+  border-image-slice: 81 60 60 60 fill; 
+  border-image-outset:70px; 
+  border-image-width: 100px; 
+  border-image-source: url(/img/borders/1.png);
+
 }
-.enemy-menu {
+
+
+.attack-btn{
+    padding: 10px;
+    background: none;
+    text-align: center;
+    margin: 10px;
+    font-size: 15px;
+    font-family: HomeVideo;
+    display: inline-block;
+    border: 20px;
+    word-wrap: break-word;
+      border-image-slice: 5;
+    border-image-width: 10px;
+    border-image-outset:2px; 
+    border-image-source: url(/img/borders/button.png);
+    border-image-repeat: 100% 100%;
+    
+}
+
+.attack-btn:hover{
+    
+    border-image-outset:6px; 
+    border-image-source: url(/img/borders/button_selected.png);
+    transition-property: transform;
+    transition-duration: .05s;
+}
+
+.attack-btn:active{
+    transform: translateY(4px);
+}
+
+
+.pergunta-div{
+    padding: 15px;
+    background: none;
+    text-align: center;
+    margin: 0px;
+    font-size: 15px;
+    font-family: HomeVideo;
+    display: inline-block;
+    word-wrap: break-word;
+      border-image-slice: 2;
+    border-image-width: .5vh;
+    border-image-outset:1.5vh; 
+    border-image-source: url(/img/borders/pegurta_border.png);
+    border-image-repeat: 100% 100%;
+    
+}
+
+
+.pergunta-menu{
   display: flex;
   flex-direction: column;
   row-gap: 1vh;
-  position: fixed;
-  opacity: .5;
-  right:0;
+  left:0;
   top: 0;
-  width: 40%;
-  margin: 10px;
-  background-clip: padding-box;
-  background-image: url(/img/borders/backgroundorange.png);
-  padding: 40px;
-  border-image-slice: 7 7 7 7;
-  border-image-outset:6px; 
-  border-image-width: 13px; 
-  border-image-source: url(/img/borders/border_orange2.png);
-  border-image-repeat: repeat;
+  width: 30%;
+  margin: 6vh;
+  padding: 6vh;
+  border-image-slice: 81 60 60 60 fill;
+  border-image-outset:70px; 
+  border-image-width: 100px; 
+  border-image-source: url(/img/borders/1.png);
+
 }
-.enemy-menu:hover {
-    opacity: 1;
+.perfil-position{
+
+    right: 0;
+    display: flex;
+    position: absolute;
+    top: 0;
+    margin: 20px;
+    
+}
+
+.perfil{
+
+    width: 40vh;
+    height: auto;
+
+    
 }
 
 .enemy-position{
@@ -57,7 +117,7 @@ body{
     right: 15%;
     display: flex;
     position: absolute;
-    top: 40%;
+    top: 55%;
     
 }
 
@@ -80,23 +140,6 @@ body{
     z-index: -1;
 }
 
-.attack-btn{
-    padding: 25px;
-    background: none;
-    text-align: center;
-    
-    font-size: 15px;
-    font-family: HomeVideo;
-    display: inline-block;
-    border: 20px;
-    word-wrap: break-word;
-      border-image-slice: 10;
-    border-image-width: 20px 20px 20px 20px;
-    border-image-outset:2px; 
-    border-image-source: url(/img/borders/border_orange5.png);
-    border-image-repeat: repeat;
-    
-}
 
 
 .point-filter{
