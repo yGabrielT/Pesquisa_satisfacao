@@ -51,11 +51,16 @@ function IniciarQuestoes(){
 }
 
 function AtualizarQuestoes(){
+
+    
+
     questoesRepondidas++;
     if (questoesRepondidas >= perguntas.length){
         console.log('Todas questões respondidas');
         return;
     }
+    var iconId = Math.floor(Math.random() * 48) + 1
+    $('#enemy_img').attr("src", `/img/enemies/enemies_all/Icon${iconId}.png`);
     $(".pergunta-div").text(perguntas[questoesRepondidas])
     let questoesRepondidasCount = (questoesRepondidas * quantRespostasLayout);
     let questoesParaResponder = (questoesRepondidasCount + quantRespostasLayout)

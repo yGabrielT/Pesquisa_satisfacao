@@ -12,6 +12,65 @@ body{
 
 }
 
+
+
+.center{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.menu-login {
+    
+    row-gap: 1vh;
+    flex-direction: column;
+    align-items: center;
+    width: 60%;
+    padding: 50px;
+    
+    margin-top: 5%;
+    border-image-slice: 81 60 60 60 fill; 
+    border-image-outset:70px; 
+    border-image-width: 100px; 
+    border-image-source: url(/img/borders/1.png);
+
+}
+
+.loginForm{
+    display: flex;
+    flex-direction: column;
+}
+
+h1{
+    font-family: HomeVideo;
+}
+
+h4{
+    font-family: HomeVideo;
+}
+
+.align-text{
+    text-align: center;
+}
+
+
+#titulo-login{
+    top: 0;
+    text-align: center;
+
+}
+
+#login-logo{
+    display: flex;
+    align-self: center;
+    width: 100%;
+    margin-bottom: 50px;
+
+}
+
+
+
 .attack-menu {
   display: flex;
   flex-direction: column;
@@ -28,7 +87,23 @@ body{
   border-image-source: url(/img/borders/1.png);
 
 }
-
+.attack-btn-dev{
+    padding: 10px;
+    background-color: whitesmoke;
+    text-align: center;
+    margin: 4px;
+    font-size: 15px;
+    font-family: HomeVideo;
+    display: inline-block;
+    border: 20px;
+    word-wrap: break-word;
+      border-image-slice: 5;
+    border-image-width: 10px;
+    border-image-outset:2px; 
+    border-image-source: url(/img/borders/button.png);
+    border-image-repeat: 100% 100%;
+    
+}
 
 .attack-btn{
     padding: 10px;
@@ -78,6 +153,23 @@ body{
     
 }
 
+.pergunta-div-dev{
+    padding: 10px;
+    background-color: whitesmoke;
+    text-align: center;
+    margin-bottom: 10px;
+    font-size: 15px;
+    font-family: HomeVideo;
+    display: inline-block;
+    word-wrap: break-word;
+      border-image-slice: 2;
+    border-image-width: .5vh;
+    border-image-outset:.5vh; 
+    border-image-source: url(/img/borders/pegurta_border.png);
+    border-image-repeat: 100% 100%;
+    
+}
+
 
 .pergunta-menu{
   display: flex;
@@ -122,7 +214,7 @@ body{
 }
 
 .enemy{
-
+      transform: scaleX(-1);
     right: 15%;
     height: 40vh;
     display: flex;
@@ -136,7 +228,7 @@ body{
     height: 40vh;
     display: flex;
     position: absolute;
-    margin-top: 4vh;
+    margin-top: 2vh;
     z-index: -1;
 }
 
