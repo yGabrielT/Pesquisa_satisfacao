@@ -1,28 +1,30 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PesquisaRPG - Login</title>
+    <title>PesquisaRPG - Registar</title>
     <link rel="stylesheet" href="../css/style.css">
-    <script src="../js/jquery-3.7.1.min.js"></script>
-    <script src="../js/registrar.js"></script>
+
 </head>
+
 <body>
     <div class="center">
 
         <div class="menu-login point-filter">
             <h1 id="titulo-login">Registar</h1>
-            <form class="loginForm">
+            <form id="login-Form" class="loginForm">
                 <input id="nome" type="text" placeholder="Nome" required>
                 <input id="email" type="email" placeholder="Email" required>
-                <input id="password" type="password" placeholder="Senha" required>
-                <button id ="registrar-btn" type="submit" class="attack-btn point-filter">Criar conta</button>
-                
+                <input id="senha" type="password" placeholder="Senha" required>
+                <button id="registrar-btn" type="submit" class="attack-btn point-filter">Criar conta</button>
+
             </form>
         </div>
     </div>
-
-
+    <script src="../js/jquery-3.7.1.min.js"></script>
+    <script src="../js/registrar.js"></script>
 </body>
+
 </html>

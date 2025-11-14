@@ -6,13 +6,13 @@ var queryresult;
 
 
 const con = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "1234",
-  database: 'dbpesquisa'
+    host: "localhost",
+    user: "root",
+    password: "1234",
+    database: 'dbpesquisa'
 });
 
-con.connect(function(err) {
+con.connect(function (err) {
     if (err) throw err;
 });
 /*
@@ -28,7 +28,7 @@ con.connect(function(err) {
 */
 const app = express();
 
-app.use(express.static(path.join(__dirname)));
+app.use(express.static(path.join(__dirname, '../')));
 app.use(express.json());
 
 app.use('/img', express.static(path.join(__dirname, '../img')));
@@ -37,115 +37,118 @@ app.use('/css', express.static(path.join(__dirname, '../css')));
 
 app.use('/js', express.static(path.join(__dirname, '../js')));
 
-app.get('/Quest', (req,res) => {
+app.get('/Quest', (req, res) => {
     res.sendFile(path.join(__dirname, '../views/index.html'));
 });
 
-app.get('/Registrar', (req,res) => {
+app.get('/Registrar', (req, res) => {
     res.sendFile(path.join(__dirname, '../views/registrar.html'));
 });
 
-app.get('/', (req,res) => {
+app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, '../views/login.html'));
 });
 
-app.get('/CriarQuest', (req,res) => {
+app.get('/CriarQuest', (req, res) => {
     res.sendFile(path.join(__dirname, '../views/criarQuest.html'));
 });
+app.get('/SelecionarQuest', (req, res) => {
+    res.sendFile(path.join(__dirname, '../views/selecionarQuest.html'));
+});
 
-app.get('/sql/RegistrarUsu', (req,res) => {
-  const { nome, email, senha} = req.query;
-  
+app.get('/sql/RegistrarUsu', (req, res) => {
+    const { nome, email, senha } = req.query;
 
-  if (!nome || !email || !senha) {
-      return res.status(400).json({ error: 'values are required' });
-  }
+    if (!nome || !email || !senha) {
+        return res.status(400).json({ error: 'values are required' });
+    }
 
-  const query = 'INSERT INTO usuarios (nome, email, senha) VALUE (?,?,?)';
-  
-  con.query(query, [nome, email, senha], (err, result) => {
-      if (err) throw err;
-      console.log(result);
-      res.json(result);
-  });
-  
-}); 
+    const query = 'INSERT INTO usuarios (nome, email, senha) VALUES (?, ?, ?)';
 
-
+    con.query(query, [nome, email, senha], (err, result) => {
+        if (err) throw err;
+        res.json({ success: true, result });
+    });
+});
 
 
-app.get('/sql/LoginUsu', (req,res) => {
-  const { nome, email, senha} = req.query;
-  
-
-  if (!nome || !email || !senha) {
-      return res.status(400).json({ error: 'values are required' });
-  }
-
-  const query = 'INSERT INTO usuarios (nome, email, senha) VALUE (?,?,?)';
-  
-  con.query(query, [nome, email, senha], (err, result) => {
-      if (err) throw err;
-      console.log(result);
-      res.json(result);
-  });
-  
-}); 
-
-app.get('/sql/CriarSala', (req,res) => {
-  const { nome, email, senha} = req.query;
-  
-
-  if (!nome || !email || !senha) {
-      return res.status(400).json({ error: 'values are required' });
-  }
-
-  const query = 'INSERT INTO usuarios (nome, email, senha) VALUE (?,?,?)';
-  
-  con.query(query, [nome, email, senha], (err, result) => {
-      if (err) throw err;
-      console.log(result);
-      res.json(result);
-  });
-  
-}); 
 
 
-app.get('/sql/VerificarSala', (req,res) => {
-  const { nome, email, senha} = req.query;
-  
+app.get('/sql/LoginUsu', (req, res) => {
+    const { email, senha } = req.query;
 
-  if (!nome || !email || !senha) {
-      return res.status(400).json({ error: 'values are required' });
-  }
 
-  const query = 'INSERT INTO usuarios (nome, email, senha) VALUE (?,?,?)';
-  
-  con.query(query, [nome, email, senha], (err, result) => {
-      if (err) throw err;
-      console.log(result);
-      res.json(result);
-  });
-  
-}); 
+    if (!email || !senha) {
+        return res.status(400).json({ error: 'values are required' });
+    }
 
-app.get('/sql/VerificarSala', (req,res) => {
-  const { nome, email, senha} = req.query;
-  
+    const query = 'SELECT nome, id_usuario FROM usuarios WHERE email = (?) and senha = (?)';
 
-  if (!nome || !email || !senha) {
-      return res.status(400).json({ error: 'values are required' });
-  }
+    con.query(query, [email, senha], (err, result) => {
+        if (err) throw err;
 
-  const query = 'INSERT INTO usuarios (nome, email, senha) VALUE (?,?,?)';
-  
-  con.query(query, [nome, email, senha], (err, result) => {
-      if (err) throw err;
-      console.log(result);
-      res.json(result);
-  });
-  
-}); 
+        if (result.length === 0) {
+            return res.json({ ret: false, message: 'Usuário não encontrado' });
+        }
+        return res.json({ ret: true, result: result});
+    });
+
+});
+
+app.get('/sql/CriarSala', (req, res) => {
+    const { nome, email, senha } = req.query;
+
+
+    if (!nome || !email || !senha) {
+        return res.status(400).json({ error: 'values are required' });
+    }
+
+    const query = 'INSERT INTO usuarios (nome, email, senha) VALUE (?,?,?)';
+
+    con.query(query, [nome, email, senha], (err, result) => {
+        if (err) throw err;
+        console.log(result);
+        res.json(result);
+    });
+
+});
+
+
+app.get('/sql/VerificarSala', (req, res) => {
+    const { nome, email, senha } = req.query;
+
+
+    if (!nome || !email || !senha) {
+        return res.status(400).json({ error: 'values are required' });
+    }
+
+    const query = 'INSERT INTO usuarios (nome, email, senha) VALUE (?,?,?)';
+
+    con.query(query, [nome, email, senha], (err, result) => {
+        if (err) throw err;
+        console.log(result);
+        res.json(result);
+    });
+
+});
+
+app.get('/sql/VerificarSala', (req, res) => {
+    const { nome, email, senha } = req.query;
+
+
+    if (!nome || !email || !senha) {
+        return res.status(400).json({ error: 'values are required' });
+    }
+
+    const query = 'INSERT INTO usuarios (nome, email, senha) VALUE (?,?,?)';
+
+    con.query(query, [nome, email, senha], (err, result) => {
+        if (err) throw err;
+        console.log(result);
+        res.json(result);
+    });
+
+});
 
 
 app.listen(8080, () => {

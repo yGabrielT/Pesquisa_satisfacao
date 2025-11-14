@@ -27,9 +27,8 @@ const questoes = [
 
 const respostas = []; 
 $(document).ready(function(){
-    const params = new URLSearchParams(window.location.search);
-    const id = params.get("id");
-    console.log("ID no front:", id);
+    const idQuest = localStorage.getItem('idQuest');
+    console.log("ID no front:", idQuest);
 
     
 

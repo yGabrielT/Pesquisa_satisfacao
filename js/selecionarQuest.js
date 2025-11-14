@@ -1,4 +1,4 @@
-$('#login-Form').on('submit', function(e) {
+$(document).ready(function(){
     e.preventDefault();
 
     const nome = $('#nome').val();
