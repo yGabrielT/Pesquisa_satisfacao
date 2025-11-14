@@ -53,4 +53,6 @@ INNER JOIN usuarios ON usuarios.id_usuario = questionarios.id_usuario
 WHERE usuarios.id_usuario = 2
 ;
 
+SELECT * from usuarios
+
 

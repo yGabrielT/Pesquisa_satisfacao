@@ -26,10 +26,10 @@ body{
     row-gap: 1vh;
     flex-direction: column;
     align-items: center;
-    width: 60%;
+    width: 15%;
     padding: 50px;
     
-    margin-top: 5%;
+    margin-top: 2%;
     border-image-slice: 81 60 60 60 fill; 
     border-image-outset:70px; 
     border-image-width: 100px; 
@@ -65,6 +65,7 @@ h4{
     display: flex;
     align-self: center;
     width: 100%;
+    margin-top: 50px;
     margin-bottom: 50px;
 
 }
