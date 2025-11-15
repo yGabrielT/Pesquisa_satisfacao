@@ -10,7 +10,8 @@ $('#entrarCriarQuest-form').on('submit', function(e) {
 
             if (data.ret === true) {
                 console.log('Login Válido!', data.result[0].nome, data.result[0].id_usuario);
-                localStorage.setItem('idCliente',data.result[0].id_usuario);
+                localStorage.setItem('idUsuario',data.result[0].id_usuario);    
+                location.href = '/SelecionarQuest';
             } else {
                 console.log('Login Inválido', data.message);
             }

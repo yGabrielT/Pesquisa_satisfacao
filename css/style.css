@@ -21,13 +21,75 @@ body{
 
 }
 
+.questSelectable {
+    width: 100%;
+}
+
+.questText {
+    margin-top: 10px;            /* opcional */
+    font-family: HomeVideo;
+    text-align: center;
+}
+
+.questItem {
+    display: flex;
+    flex-direction: column;     /* imagem em cima, texto embaixo */
+    align-items: center;        /* centraliza tudo */
+    width: 150px;               /* ajuste conforme o tamanho da imagem */
+    margin: 10px;
+}
+
+.questItem:hover{
+    border-image-slice: 5;
+    border-image-width: 10px;
+    border-image-repeat: 100% 100%;
+    border-image-outset:15px; 
+    border-image-source: url(/img/borders/5.png);
+    transition-property: transform;
+    transition-duration: .05s;
+    transform: translateY(-2px);
+}
+
+.questItem:active{
+    transform: translateY(4px);
+}
+
+.menu-selecionarQuest{
+    row-gap: 1vh;
+    flex-direction: column;
+    align-items: center;
+    width: 70%;
+    min-height: 700px;
+    padding: 50px;
+    display: flex;
+    margin-top: 2%;
+    border-image-slice: 81 60 60 60 fill; 
+    border-image-outset:70px; 
+    border-image-width: 100px; 
+    border-image-source: url(/img/borders/1.png);
+
+}
+.questContainer {
+    margin-top: 50px;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+
+
+
 .menu-login {
     
     row-gap: 1vh;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     width: 15%;
     padding: 50px;
+    display: flex;
     
     margin-top: 2%;
     border-image-slice: 81 60 60 60 fill; 
@@ -42,6 +104,30 @@ body{
     flex-direction: column;
 }
 
+.analiseRes{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+        
+}
+.analiseResIn{
+    display: flex;
+    flex-direction: row;
+    width: 50%;
+    word-wrap: break-word;
+}
+
+.loginFormAnalise{
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+}
+#AnaliseContainer{
+    width: 80%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
 h1{
     font-family: HomeVideo;
 }
@@ -127,12 +213,45 @@ h4{
 .attack-btn:hover{
     
     border-image-outset:6px; 
+    transform: translateY(-2px);
     border-image-source: url(/img/borders/button_selected.png);
     transition-property: transform;
     transition-duration: .05s;
 }
 
 .attack-btn:active{
+    transform: translateY(4px);
+}
+
+.criarQuest-btn{
+    background: none;
+    text-align: center;
+    width: 100%;
+    margin-top: auto;
+    height: 50px;
+    bottom: 0;
+    font-size: 25px;
+    font-family: HomeVideo;
+    border: 20px;
+    word-wrap: break-word;
+      border-image-slice: 5;
+    border-image-width: 10px;
+    border-image-outset:2px; 
+    border-image-source: url(/img/borders/button.png);
+    border-image-repeat: 100% 100%;
+    
+}
+
+.criarQuest-btn:hover{
+    
+    border-image-outset:6px; 
+    border-image-source: url(/img/borders/button_selected.png);
+    transition-property: transform;
+    transform: translateY(-2px);
+    transition-duration: .05s;
+}
+
+.criarQuest-btn:active{
     transform: translateY(4px);
 }
 

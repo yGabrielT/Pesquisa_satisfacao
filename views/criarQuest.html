@@ -10,29 +10,29 @@
 <body>
     <div class="center">
 
-        <div class="menu-login point-filter">
+        <form class="menu-login point-filter">
             <h1 id="titulo-login">Criar Questionário</h1>
             <h4 class="align-text">
                         Nome do Questionário
                     </h4>
-            <input id ="nome-quest" placeholder="Nome" class="pergunta-div-dev" >
+            <input id ="nome-quest" placeholder="Nome" class="pergunta-div-dev" required>
             <div class="pergunta-Container">
 
-                <form id="loginForm1" class="loginForm">
+                <div id="loginForm1" class="loginForm">
                     <h4 class="align-text">
                         Pergunta 1
                     </h4>
-                    <input id="pergunta" placeholder="Pergunta" class="pergunta-div-dev" >
-                    <input id="Resposta1" placeholder="1º Resposta" class="attack-btn-dev" >
-                    <input id="Resposta2" placeholder="2º Resposta" class="attack-btn-dev" >
-                    <input id="Resposta3" placeholder="3º Resposta" class="attack-btn-dev" >
-                    <input id="Resposta4" placeholder="4º Resposta" class="attack-btn-dev" >
-                </form>
+                    <input placeholder="Pergunta" class="pergunta pergunta-div-dev" required>
+                    <input placeholder="1º Resposta" class="resposta1 attack-btn-dev" required>
+                    <input placeholder="2º Resposta" class="resposta2 attack-btn-dev" required>
+                    <input placeholder="3º Resposta" class="resposta3 attack-btn-dev" required>
+                    <input placeholder="4º Resposta" class="resposta4 attack-btn-dev" required>
+                </div>
             </div>
-                
-            <button id="adicionar-btn" type="submit" class="attack-btn point-filter">Adicionar Pergunta</button>
-            <button type="submit" class="attack-btn point-filter">Publicar Questionário</button>
-        </div>
+            
+            <button id="adicionar-btn" type="button" class="attack-btn point-filter">Adicionar Pergunta</button>
+            <button id="publicar-btn" type="submit" class="attack-btn point-filter">Publicar Questionário</button>
+        </form>
     </div>
     <script src="../js/jquery-3.7.1.min.js"></script>
     <script src="../js/criarquest.js"></script>

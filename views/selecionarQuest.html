@@ -10,26 +10,11 @@
 <body>
     <div class="center">
 
-        <div class="menu-login point-filter">
-            <h1 id="titulo-login">Login</h1>
-            <img id= "login-logo" class="point-filter" src="/img/enemies/slime.png">
-            <form id="entrarQuest-form"class="loginForm">
-                <h4 class="align-text">
-                    Entrar Questionário
-                </h4>
-                <input id="SenhaSala"type="password" placeholder="Senha da sala" required>
-                <button id="entrarQuest-btn" type="submit" class="attack-btn point-filter" onclick="location.href='/Quest?id=10'">Entrar</button>
-            </form>
-            <form id="entrarCriarQuest-form"class="loginForm">
-                <h4 class="align-text">
-                    Criar Questionário
-                </h4>
-                <input id="emailCriarQuest" type="email" placeholder="Email" required>
-                <input id="senhaCriarQuest" type="password" placeholder="Senha" required>
-                <button id="entrarCriarQuest-btn" type="button" class="attack-btn point-filter">Entrar</button>
-                <button type="button" class="attack-btn point-filter" onclick="location.href='/Registrar'">Registrar</button>
-                
-            </form>
+        <div class="menu-selecionarQuest point-filter">
+            <h1 id="titulo-login">Questionários Criados</h1>
+            <div class = "questContainer">
+            </div>
+            <button id="CriarQuest-btn" type="button" class="criarQuest-btn point-filter" onclick="location.href='/CriarQuest'">Criar Questionário</button>
         </div>
     </div>
     <script src="../js/jquery-3.7.1.min.js"></script>

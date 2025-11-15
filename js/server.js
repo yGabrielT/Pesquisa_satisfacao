@@ -55,6 +55,9 @@ app.get('/CriarQuest', (req, res) => {
 app.get('/SelecionarQuest', (req, res) => {
     res.sendFile(path.join(__dirname, '../views/selecionarQuest.html'));
 });
+app.get('/AnaliseQuest', (req, res) => {
+    res.sendFile(path.join(__dirname, '../views/analiseQuest.html'));
+});
 
 app.get('/sql/RegistrarUsu', (req, res) => {
     const { nome, email, senha } = req.query;
@@ -90,66 +93,129 @@ app.get('/sql/LoginUsu', (req, res) => {
         if (result.length === 0) {
             return res.json({ ret: false, message: 'Usuário não encontrado' });
         }
-        return res.json({ ret: true, result: result});
+        return res.json({ ret: true, result: result });
     });
 
 });
 
-app.get('/sql/CriarSala', (req, res) => {
-    const { nome, email, senha } = req.query;
+app.post('/sql/CriarSala', (req, res) => {
+    const { questionarioRaw, idUsuario, textoQuestionario, salaNumero } = req.body;
+    
+    if (!questionarioRaw || !idUsuario || !textoQuestionario || !salaNumero) {
+        return res.status(400).json({ error: 'values are required' });
+    }
+    
+    const questionario = JSON.parse(questionarioRaw);
+
+    questionario.forEach(q=>{
+        console.log(q)
+        q.respostas.forEach(r=>{
+            console.log(r);
+        })
+    })
+    con.beginTransaction(err => {
+        if (err) return res.status(500).json({ error: err });
+
+        const query1 = 'INSERT INTO questionarios (texto_questionario, id_usuario, senha_sala) VALUES (?, ?, ?)';
+        con.query(query1, [textoQuestionario, idUsuario, salaNumero], (err, result1) => {
+            if (err) {
+                return con.rollback(() => res.status(500).json({ error: err }));
+            }
+            questionario.forEach(q => {
+                const query2 = 'INSERT INTO perguntas (texto_pergunta, id_questionario) VALUES (?, ?)';
+                con.query(query2, [q.pergunta, result1.insertId], (err, result2) => {
+                    if (err) {
+                        return con.rollback(() => res.status(500).json({ error: err }));
+                    }
+
+                    q.respostas.forEach(r => {
+                        const query3 = 'INSERT INTO respostas (id_pergunta, texto_resposta, quant_respondida) VALUES (?, ?, ?)';
+                        con.query(query3, [result2.insertId, r, 0], (err, result3) => {
+                            if (err) {
+                                return con.rollback(() => res.status(500).json({ error: err }));
+                            }
+
+                        });
+
+                    });
 
 
-    if (!nome || !email || !senha) {
+                });
+                
+            });
+
+            con.commit(err => {
+                if (err) {
+                    return con.rollback(() => res.status(500).json({ error: err }));
+                }
+
+                res.json({
+                    idQuest: result1,
+                    ret: true
+                });
+            });
+        });
+    });
+});
+
+
+
+
+app.get('/sql/SelecionarQuest', (req, res) => {
+    const { idUsuario } = req.query;
+
+
+    if (!idUsuario) {
         return res.status(400).json({ error: 'values are required' });
     }
 
-    const query = 'INSERT INTO usuarios (nome, email, senha) VALUE (?,?,?)';
+    const query = `SELECT
+                    questionarios.id_questionario,questionarios.texto_questionario 
+                FROM questionarios 
+                INNER JOIN usuarios ON usuarios.id_usuario = questionarios.id_usuario
+                WHERE usuarios.id_usuario = (?)`;
 
-    con.query(query, [nome, email, senha], (err, result) => {
+    con.query(query, [idUsuario], (err, result) => {
         if (err) throw err;
         console.log(result);
-        res.json(result);
+        if (result.length === 0) {
+            return res.json({ ret: false, message: 'Usuário não encontrado' });
+        }
+        return res.json({ ret: true, result: result });
     });
 
 });
 
 
-app.get('/sql/VerificarSala', (req, res) => {
-    const { nome, email, senha } = req.query;
+app.get('/sql/SelecionarAnaliseQuest', (req, res) => {
+    const { idQuest } = req.query;
 
 
-    if (!nome || !email || !senha) {
+    if (!idQuest) {
         return res.status(400).json({ error: 'values are required' });
     }
 
-    const query = 'INSERT INTO usuarios (nome, email, senha) VALUE (?,?,?)';
+    const query = 
+                `SELECT 
+                    texto_pergunta,
+                    texto_resposta,
+                    quant_respondida,
+                    texto_questionario
+                FROM respostas 
+                INNER JOIN perguntas ON respostas.id_pergunta = perguntas.id_pergunta
+                INNER JOIN questionarios ON perguntas.id_questionario = questionarios.id_questionario
+                WHERE questionarios.id_questionario = (?)`;
 
-    con.query(query, [nome, email, senha], (err, result) => {
+    con.query(query, [idQuest], (err, result) => {
         if (err) throw err;
         console.log(result);
-        res.json(result);
+        if (result.length === 0) {
+            return res.json({ ret: false, message: 'Usuário não encontrado' });
+        }
+        return res.json({ ret: true, result: result });
     });
 
 });
-
-app.get('/sql/VerificarSala', (req, res) => {
-    const { nome, email, senha } = req.query;
-
-
-    if (!nome || !email || !senha) {
-        return res.status(400).json({ error: 'values are required' });
-    }
-
-    const query = 'INSERT INTO usuarios (nome, email, senha) VALUE (?,?,?)';
-
-    con.query(query, [nome, email, senha], (err, result) => {
-        if (err) throw err;
-        console.log(result);
-        res.json(result);
-    });
-
-});
-
 
 app.listen(8080, () => {
     console.log('Server esta escutando no porto 8080');
