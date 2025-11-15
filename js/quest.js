@@ -1,6 +1,7 @@
 let questoesRepondidas = -1;
 
 let dados = [];
+let terminou = false;
 
 const respostas = [];
 $(document).ready(function () {
@@ -98,6 +99,8 @@ function AtualizarQuestoes(respID) {
 }
 
 function finalizarQuestoes() {
+    if (terminou) return;
+    terminou = true;
 
     let idsRespondidos = [];
     dados.forEach(q => {
@@ -185,5 +188,5 @@ function setAttackAnimation(idButton) {
     sprite.addEventListener('animationend', () => {
         console.log("Animação concluída!");
         AtualizarQuestoes(idButton);
-    });
+    }, { once: true });
 }
