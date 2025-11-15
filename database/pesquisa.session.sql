@@ -66,4 +66,6 @@ select * from perguntas
 select * from respostas
 alter table questionarios modify senha_sala VARCHAR(255) NOT NULL
 
-select * from re
+select id_questionario from questionarios where senha_sala = 'jVRNLbojit'
+
+update respostas set quant_respondida = quant_respondida + 1 where id_respostas = 1

@@ -32,6 +32,7 @@ $.get('/sql/SelecionarAnaliseQuest', { idQuest: idQuest }, function (data) {
     console.log(data.result[0].texto_questionario);
     gerarHTML(listaFormatada);
     $("#titulo-login").text(data.result[0].texto_questionario);
+    $("#senha-sala").text("Senha da sala: " + data.result[0].senha_sala);
 
 
 

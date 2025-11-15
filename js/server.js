@@ -15,6 +15,7 @@ const con = mysql.createConnection({
 con.connect(function (err) {
     if (err) throw err;
 });
+con.promise()
 /*
 con.connect(function(err) {
     if (err) throw err;
@@ -31,6 +32,8 @@ const app = express();
 app.use(express.static(path.join(__dirname, '../')));
 app.use(express.json());
 
+
+
 app.use('/img', express.static(path.join(__dirname, '../img')));
 
 app.use('/css', express.static(path.join(__dirname, '../css')));
@@ -38,7 +41,7 @@ app.use('/css', express.static(path.join(__dirname, '../css')));
 app.use('/js', express.static(path.join(__dirname, '../js')));
 
 app.get('/Quest', (req, res) => {
-    res.sendFile(path.join(__dirname, '../views/index.html'));
+    res.sendFile(path.join(__dirname, '../views/quest.html'));
 });
 
 app.get('/Registrar', (req, res) => {
@@ -98,61 +101,134 @@ app.get('/sql/LoginUsu', (req, res) => {
 
 });
 
-app.post('/sql/CriarSala', (req, res) => {
+app.get('/sql/EntrarSala', (req, res) => {
+    const { senhaSala } = req.query;
+
+
+    if (!senhaSala) {
+        return res.status(400).json({ error: 'values are required' });
+    }
+
+    const query = 'SELECT id_questionario FROM questionarios WHERE senha_sala = (?)';
+
+    con.query(query, [senhaSala], (err, result) => {
+        if (err) throw err;
+
+        if (result.length === 0) {
+            return res.json({ ret: false, message: 'Sala não encontrada' });
+        }
+        return res.json({ ret: true, result: result });
+    });
+
+});
+
+app.post('/sql/CriarSala', async (req, res) => {
     const { questionarioRaw, idUsuario, textoQuestionario, salaNumero } = req.body;
-    
+
     if (!questionarioRaw || !idUsuario || !textoQuestionario || !salaNumero) {
         return res.status(400).json({ error: 'values are required' });
     }
-    
+
     const questionario = JSON.parse(questionarioRaw);
 
-    questionario.forEach(q=>{
-        console.log(q)
-        q.respostas.forEach(r=>{
-            console.log(r);
-        })
-    })
+    con.beginTransaction(async (err) => {
+        if (err) return res.status(500).json({ error: err });
+
+        try {
+
+            // 1. Insere o questionário
+            const [result1] = await con.promise().query(
+                "INSERT INTO questionarios (texto_questionario, id_usuario, senha_sala) VALUES (?, ?, ?)",
+                [textoQuestionario, idUsuario, salaNumero]
+            );
+
+            const idQuestionario = result1.insertId;
+
+            // Prepara todas as queries numa lista
+            const allQueries = [];
+
+            // 2. Insere cada pergunta e suas respostas
+            for (const q of questionario) {
+
+                const [result2] = await con.promise().query(
+                    "INSERT INTO perguntas (texto_pergunta, id_questionario) VALUES (?, ?)",
+                    [q.pergunta, idQuestionario]
+                );
+
+                const idPergunta = result2.insertId;
+
+                // adiciona todas as respostas na lista de Promises
+                for (const resposta of q.respostas) {
+                    allQueries.push(
+                        con.promise().query(
+                            "INSERT INTO respostas (id_pergunta, texto_resposta, quant_respondida) VALUES (?, ?, ?)",
+                            [idPergunta, resposta, 0]
+                        )
+                    );
+                }
+            }
+
+            // aguarda tudo terminar
+            await Promise.all(allQueries);
+
+            // 3. Finalizar transação
+            await con.promise().commit();
+
+            return res.json({ ret: true, idQuestionario });
+
+        } catch (err) {
+
+            await con.promise().rollback();
+            return res.status(500).json({ error: err });
+        }
+    });
+});
+
+
+
+app.post('/sql/SalvarRespostas', (req, res) => {
+    let { idsRespondidos } = req.body;
+
+    if (!idsRespondidos) {
+        return res.status(400).json({ error: 'values are required' });
+    }
+
+    // Se idsRespondidos veio como string (por causa do frontend)
+    if (typeof idsRespondidos === "string") {
+        idsRespondidos = JSON.parse(idsRespondidos);
+    }
+
     con.beginTransaction(err => {
         if (err) return res.status(500).json({ error: err });
 
-        const query1 = 'INSERT INTO questionarios (texto_questionario, id_usuario, senha_sala) VALUES (?, ?, ?)';
-        con.query(query1, [textoQuestionario, idUsuario, salaNumero], (err, result1) => {
-            if (err) {
-                return con.rollback(() => res.status(500).json({ error: err }));
-            }
-            questionario.forEach(q => {
-                const query2 = 'INSERT INTO perguntas (texto_pergunta, id_questionario) VALUES (?, ?)';
-                con.query(query2, [q.pergunta, result1.insertId], (err, result2) => {
-                    if (err) {
-                        return con.rollback(() => res.status(500).json({ error: err }));
-                    }
+        let finalizados = 0; // contador
 
-                    q.respostas.forEach(r => {
-                        const query3 = 'INSERT INTO respostas (id_pergunta, texto_resposta, quant_respondida) VALUES (?, ?, ?)';
-                        con.query(query3, [result2.insertId, r, 0], (err, result3) => {
-                            if (err) {
-                                return con.rollback(() => res.status(500).json({ error: err }));
-                            }
+        idsRespondidos.forEach(id => {
+            const query1 = `
+                UPDATE respostas 
+                SET quant_respondida = quant_respondida + 1 
+                WHERE id_respostas = ?
+            `;
 
-                        });
+            con.query(query1, [id], (err, result) => {
 
-                    });
-
-
-                });
-                
-            });
-
-            con.commit(err => {
                 if (err) {
-                    return con.rollback(() => res.status(500).json({ error: err }));
+                    return con.rollback(() => {
+                        res.status(500).json({ error: err });
+                    });
                 }
 
-                res.json({
-                    idQuest: result1,
-                    ret: true
-                });
+                finalizados++;
+
+                // Quando TODOS os updates tiverem terminado:
+                if (finalizados === idsRespondidos.length) {
+                    con.commit(err => {
+                        if (err) {
+                            return con.rollback(() => res.status(500).json({ error: err }));
+                        }
+                        return res.json({ ret: true });
+                    });
+                }
             });
         });
     });
@@ -186,6 +262,36 @@ app.get('/sql/SelecionarQuest', (req, res) => {
 
 });
 
+app.get('/sql/SelecionarResponderQuest', (req, res) => {
+    const { idQuest } = req.query;
+
+
+    if (!idQuest) {
+        return res.status(400).json({ error: 'values are required' });
+    }
+
+    const query =
+        `SELECT 
+                    texto_pergunta,
+                    texto_resposta,
+                    texto_questionario,
+                    respostas.id_respostas
+                FROM respostas 
+                INNER JOIN perguntas ON respostas.id_pergunta = perguntas.id_pergunta
+                INNER JOIN questionarios ON perguntas.id_questionario = questionarios.id_questionario
+                WHERE questionarios.id_questionario = (?)`;
+
+    con.query(query, [idQuest], (err, result) => {
+        if (err) throw err;
+        console.log(result);
+        if (result.length === 0) {
+            return res.json({ ret: false, message: 'Usuário não encontrado' });
+        }
+        return res.json({ ret: true, result: result });
+    });
+
+});
+
 
 app.get('/sql/SelecionarAnaliseQuest', (req, res) => {
     const { idQuest } = req.query;
@@ -195,12 +301,13 @@ app.get('/sql/SelecionarAnaliseQuest', (req, res) => {
         return res.status(400).json({ error: 'values are required' });
     }
 
-    const query = 
-                `SELECT 
+    const query =
+        `SELECT 
                     texto_pergunta,
                     texto_resposta,
                     quant_respondida,
-                    texto_questionario
+                    texto_questionario,
+                    senha_sala
                 FROM respostas 
                 INNER JOIN perguntas ON respostas.id_pergunta = perguntas.id_pergunta
                 INNER JOIN questionarios ON perguntas.id_questionario = questionarios.id_questionario
