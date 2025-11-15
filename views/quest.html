@@ -24,6 +24,9 @@
         <div class="enemy-position point-filter">
             <img id="enemy_img"class="enemy point-filter" src="">
             <img class="shadow point-filter" src="/img/enemies/shadow.png">
+            <div class="attack" style="display: none;">
+                <img class="attack_sprite" src="">
+            </div>
         </div>
         <div class="perfil-position point-filter">
             <img class="perfil point-filter" src="/img/profile.png">
@@ -32,6 +35,16 @@
 
         
     </div>
+    <div id="victory-container" style="display: none;">
+        <div id="victory-screen">
+        <div class="victory-box">
+                <h1>Vitória!</h1>
+                <p>Você derrotou todos os monstros!</p>
+                <button id="voltar-btn" type="button" class="criarQuest-btn point-filter" onclick="location.href='/'">Voltar para o menu inicial</button>
+            </div>
+        </div>
+    </div>
+
     <script src="../js/jquery-3.7.1.min.js"></script>
     <script src="../js/quest.js"></script>
 </body>

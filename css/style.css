@@ -149,6 +149,12 @@ h4{
     text-align: center;
 }
 
+.sucessText{
+    color: rgb(25, 199, 25);
+    font-weight: bold;
+    font-size: 30px;
+}
+
 .notFound{
     font-size: 50px;
     text-align: center;
@@ -381,3 +387,79 @@ h4{
     image-rendering: optimize-contrast;         /* CSS3 Proposed                  */
     -ms-interpolation-mode: nearest-neighbor;   /* IE8+                           */
 }
+
+
+/* Fundo que cobre toda a tela */
+#victory-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    backdrop-filter: blur(8px); 
+    background: rgba(0,0,0,0.6); 
+
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    z-index: 9999;
+    font-family: BoldPixels;
+}
+
+/* Caixa central */
+.victory-box {
+    background: rgba(255, 255, 255, 0.9);
+    padding: 40px;
+    text-align: center;
+
+    /* borda estilizada RPG */
+    border-image-slice: 81 60 60 60 fill;
+    border-image-width: 70px;
+    border-image-outset: 40px;
+    border-image-source: url(/img/borders/1.png);
+
+    max-width: 600px;
+    width: 80%;
+}
+
+:root{
+    --sheet-w: 64px;
+    --sheet-h: 128px;
+    --sheet-steps: 10;
+    --pixel-size: 6;
+    --sheet-bottom: -39vh;
+    --sheet-right: -1vh;
+}
+
+.attack{
+    position: absolute;
+    z-index: 3;
+    width: calc(var(--sheet-w) * var(--pixel-size));
+    height: calc(var(--sheet-h) * var(--pixel-size));
+    right: var(--sheet-right);
+    bottom: var(--sheet-bottom);
+    overflow: hidden;
+}
+
+.attack_sprite{
+    width: calc(calc((var(--sheet-steps) * var(--sheet-w))) * var(--pixel-size));
+}
+
+.attack_sprite.run{
+    animation: moveSpritesheet 1.2s steps(var(--sheet-steps)) 1 forwards;
+    width: calc(calc((var(--sheet-steps) * var(--sheet-w))) * var(--pixel-size));
+}
+
+
+@keyframes moveSpritesheet {
+   from {
+      transform: translate3d(0px,0,0)
+   }
+   to {
+      transform: translate3d(-100%,0,0)
+   }
+}
+
+

@@ -1,3 +1,5 @@
+
+
 $('#login-Form').on('submit', function(e) {
     e.preventDefault();
 
@@ -9,6 +11,7 @@ $('#login-Form').on('submit', function(e) {
 
         $.get('/sql/RegistrarUsu', { nome: nome, email: email, senha: senha }, function(data) {
             console.log(data);
+            $('.menu-login').append('<a class="sucessText">Conta criada!</a>')
         }, 'json');
 
     } else {
